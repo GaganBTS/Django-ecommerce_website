@@ -1,0 +1,48 @@
+{% extends 'store/store.html' %}
+{% load static %}
+
+{% block title %}
+    My Profile
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'profile.css' %}">
+{% endblock %}
+
+
+{% block content %}
+    <section id="profile">
+        <h3 class="heading-text ">Personal Information</h3>
+        <div id="fn">
+
+            <input type="text" placeholder="{{ user.first_name|title }}" disabled>
+        </div>
+        <div id="ln">
+
+            <input type="text" placeholder="{{ user.last_name|title }}" disabled>
+        </div>
+        <div class="email">
+            <h5>Username</h5>
+            <input size='' type="text" placeholder="{{ user.username }}" disabled>
+        </div>
+        <div class="email">
+            <h5>Email Address</h5>
+            <input size='' type="email" placeholder="{{ user.email }}" disabled>
+        </div>
+        <a href="{% url 'editacc' %}" class="btn  btn-sm btn-success">Edit Details</a>
+        <a href="{% url 'deleteacc' %}" class="btn btn-sm btn-danger">Delete Account</a>
+    </section>
+
+    <section id="ed">
+        <img src="https://i.postimg.cc/DZZsw8zz/p.png">
+        <div class="links">
+            <a href="{% url 'editacc' %}" class="btn  btn-lg btn-success">Edit Details</a>
+            <a href="{% url 'deleteacc' %}" class="btn btn-lg btn-danger">Delete Account</a>
+        </div>
+    </section>
+
+
+
+
+
+{% endblock %}

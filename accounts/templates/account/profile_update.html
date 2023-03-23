@@ -1,0 +1,32 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block title %}
+    Edit account details
+{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'register.css' %}">
+{% endblock %}
+
+
+
+{% block content %}
+
+    <div id='reg' class="container shadow-md p-5 bg-white">
+        <h3>Update your account details</h3>
+        <hr size="2">
+        <form autocomplete="off" method="post"
+              action="{% url 'editacc' %}">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-group">
+                    <h5>{{ field.label }}</h5>
+                    {{ field }}
+                    {{ field.errors }}
+                    <p class="text-muted">{{ field.help_text }}</p>
+                </div>
+            {% endfor %}
+            <button type='submit' class=" btn2 btn-primary">Update Details</button>
+        </form>
+    </div>
+
+{% endblock %}

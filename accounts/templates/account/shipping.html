@@ -1,0 +1,41 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block title %}
+    Manage {{ user.first_name|capfirst }} Shipping
+{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'register.css' %}">
+{% endblock %}
+
+
+
+{% block content %}
+    {% for message in messages %}
+        <div style="position:absolute; width:100%;" class="alert alert-success" role="alert">
+            <p class="text-center">{{ message }}</p>
+
+        </div>
+    {% endfor %}
+    <div id='reg' class="container shadow-md p-5 bg-white">
+        <h3>Manage your Shipping Address</h3>
+        <hr size="2">
+        <form autocomplete="off" method="post"
+              action="{% url 'shipping' %}">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-group">
+                    <h5>{{ field.label }}</h5>
+                    {{ field }}
+                    {{ field.errors }}
+                    <p class="text-muted">{{ field.help_text }}</p>
+                </div>
+            {% endfor %}
+            <button type='submit' class=" btn2 btn-primary">Update</button>
+        </form>
+    </div>
+    <script>
+        setTimeout(function () {
+            $('.alert').fadeOut('slow', 'linear')
+        }, 4000);
+    </script>
+{% endblock %}

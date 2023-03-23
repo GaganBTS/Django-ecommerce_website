@@ -1,0 +1,68 @@
+{% extends "store/base.html" %}
+
+
+{% load static %}
+
+{% block title %}
+    Create your account
+{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'register.css' %}">
+{% endblock %}
+{% block content %}
+    <div id='reg' class="container shadow-md p-5 bg-white">
+        {% for message in messages %}
+            <div class="alert alert-danger" role="alert">
+                <p>{{ message }}</p>
+                <a href="{% url 'register' %}" class="alert-link">Try signing up again</a>.
+            </div>
+        {% endfor %}
+        <h4>Create an account</h4>
+        <p>Purchase your favorite items today!</p>
+
+        <form autocomplete="off" method="post" action="{% url 'register' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <h5>{{ form.fname.label }}</h5>
+                {{ form.fname }}<br>
+                <p class="text-muted">{{ form.fname.help_text }}</p>
+
+            </div>
+            <div class="form-group">
+                <h5>{{ form.lname.label }}</h5>
+                {{ form.lname }}<br>
+                <p class="text-muted">{{ form.lname.help_text }}</p>
+
+            </div>
+            <div class="form-group">
+                <h5>{{ form.username.label }}</h5>
+                {{ form.username }}
+                {{ form.username.errors }}
+                <p class="text-muted">{{ form.username.help_text }}</p>
+            </div>
+            <div class="form-group">
+                <h5>{{ form.email.label }}</h5>
+                {{ form.email.errors }}
+                {{ form.email }}
+                <p class="text-muted">{{ form.email.help_text }}</p>
+
+
+            </div>
+            <div class="form-group">
+                <h5>{{ form.password1.label }}</h5>
+                {{ form.password1 }}
+                {{ form.password1.errors }}
+                {{ form.password1.help_text }}
+            </div>
+            <div class="form-group">
+                <h5>{{ form.password2.label }}</h5>
+                {{ form.password2.errors }}
+                {{ form.password2 }}
+                <p id='last' class="text-muted">{{ form.password2.help_text }}</p>
+            </div>
+            <button type='submit' class=" btn2 btn-primary">Create</button>
+        </form>
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,135 @@
+@import url('https://fonts.googleapis.com/css2?family=Mulish&display=swap');
+
+body {
+    background-color: whitesmoke;
+    font-family: 'Mulish', sans-serif;
+}
+
+#profile {
+    width: 40%;
+    margin-left: 8%;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    margin-top: 8%;
+    padding: 2%;
+    background-color: white;
+    border-radius: 15px;
+    height: 350px;
+}
+
+#ed {
+    width: 40%;
+
+    padding: 2%;
+    background-color: white;
+    float: right !important;
+    margin-top: -22.8%;
+    margin-right: 8%;
+    border-radius: 15px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    display: inline;
+    height: 350px;
+}
+
+.links .btn {
+    display: block !important;
+    margin-bottom: 4%;
+}
+
+.links {
+    float: right;
+    margin-right: 17%;
+    margin-top: 12%;
+}
+
+.heading-text {
+    margin-bottom: 2.3%;
+}
+
+#fn {
+    display: inline;
+    width: 40%;
+}
+
+#ln {
+    display: inline;
+    width: 40%;
+}
+
+#fn input {
+    display: inline;
+    margin-right: 1.5%;
+    padding: 0.8%;
+}
+
+#ln input {
+    display: inline;
+    padding: 0.8%;
+}
+
+.email {
+    margin-top: 2.3%;
+}
+
+.email input {
+    margin-top: 1%;
+    padding: 0.8%;
+}
+
+#profile .btn {
+    display: none;
+}
+
+@media only screen and (min-width: 150px) and (max-width: 768px) {
+    #profile {
+        float: none;
+        width: 90%;
+        margin-right: auto;
+        margin-left: auto;
+        display: block;
+        padding: 7%;
+        height: fit-content;
+    }
+
+    .heading-text {
+        margin-bottom: 5%;
+    }
+
+    #fn {
+        width: 80%;
+    }
+
+    #ln {
+        width: 80%;
+    }
+
+    #fn input {
+        margin-bottom: 4%;
+        padding: 2%;
+    }
+
+    #ln input {
+        padding: 2%;
+    }
+
+    .email {
+        margin-top: 5%;
+
+    }
+
+    .email input {
+        margin-top: 3%;
+        padding: 2%;
+        width: 100%;
+    }
+
+    #ed {
+        display: none;
+    }
+
+    #profile .btn {
+        display: inline-block;
+        margin-top: 5%;
+        padding: 2.5% 4%;
+    }
+
+}

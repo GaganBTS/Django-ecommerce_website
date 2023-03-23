@@ -1,0 +1,52 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block title %}
+    Login
+{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'register.css' %}">
+{% endblock %}
+
+
+
+{% block content %}
+
+    <div id='reg' class="container shadow-md p-5 bg-white">
+        {% for message in messages %}
+            <div class="alert alert-danger" role="alert">
+                <p>{{ message }}</p>
+                <a href="{% url 'login' %}" class="alert-link">Try signing in again</a>.
+            </div>
+        {% endfor %}
+        <h4>Welcome Back</h4>
+        <p>Log in to continue shopping!</p>
+
+        <form autocomplete="off" method="post"
+              action="{% url 'store' %}">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <h5>{{ form.username.label }}</h5>
+                {{ form.username }}
+                {{ form.username.errors }}
+                <p class="text-muted">{{ form.username.help_text }}</p>
+            </div>
+            <div class="form-group">
+                <h5>{{ form.password.label }}</h5>
+                {{ form.password }}
+                {{ form.password.errors }}
+                {{ form.password.help_text }}
+            </div>
+
+            <button type='submit' class=" btn2 btn-primary">Login</button>
+        </form>
+        <br>
+        <h6 class="text-center"><a href="{% url 'register' %}">Don't have an account yet?</a></h6>
+        <br>
+        <h6 class="text-center"><a href="{% url 'rp' %}">Need help with password?</a></h6>
+
+
+    </div>
+
+
+{% endblock %}
