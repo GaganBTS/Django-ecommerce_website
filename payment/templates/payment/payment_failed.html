@@ -1,0 +1,18 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block title %}
+    payment failed
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'payment.css' %}">
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <h3 style="color:crimson;">Payment Failed</h3>
+        <a class="btn btn-outline-primary" href="{% url 'cart-summary' %}">Go to Cart</a>
+
+    </div>
+{% endblock %}

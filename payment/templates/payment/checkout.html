@@ -1,0 +1,241 @@
+{% extends "store/base.html" %}
+
+
+{% load static %}
+{% block title %}
+    Checkout
+{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'checkout.css' %}">
+{% endblock %}
+{% block content %}
+
+    <style>
+
+        body {
+
+            background-color: gray;
+
+        }
+
+
+    </style>
+
+
+    <body>
+
+    <br>
+
+    <div class="container bg-white shadow-md p-5" style="">
+
+        <form id="form" onsubmit="event.preventDefault()">
+
+            <div>
+
+                <h3><i class="fa fa-chevron-circle-right" aria-hidden="true"></i> &nbsp;Complete your order </h3>
+
+                <p> Please enter in the relevant information below. </p>
+
+
+                <hr>
+
+                <br>
+
+                <div class="form-field">
+
+                    <input class="form-control validate" id="name" type="text" placeholder="Full name*"
+                           autocomplete="off" value="{{ shipping.full_name }}" required>
+
+                </div>
+
+
+                <br>
+
+
+                <div class="form-field">
+
+                    <input class="form-control validate" id="address1" type="text" placeholder="Address"
+                           autocomplete="off" value="{{ shipping.address1 }}" required>
+
+                </div>
+
+
+                <br>
+
+
+                <div class="form-field">
+
+                    <input class="form-control validate" id="address2" type="text" placeholder="Landmark"
+                           autocomplete="off" value="{{ shipping.landmark }}" required>
+
+                </div>
+
+
+                <br>
+
+
+                <div class="form-field">
+
+                    <input class="form-control validate" id="city" type="text" placeholder="City*" autocomplete="off"
+                           value="{{ shipping.city }}" required>
+
+                </div>
+                <br>
+                <div class="form-field">
+
+                    <input class="form-control validate" id="email" type="email" placeholder="Email*" autocomplete="off"
+                           value="" required>
+
+                </div>
+
+
+                <br>
+
+
+                <div class="form-field">
+
+                    <input class="form-control validate" id="state" type="text" placeholder="State" autocomplete="off"
+                           value="{{ shipping.state }}" required>
+
+                </div>
+
+
+                <br>
+
+
+                <div class="form-field">
+
+                    <input class="form-control validate" id="zipcode" type="text" placeholder="Zip code"
+                           autocomplete="off" value="{{ shipping.zipcode }}" required>
+
+                </div>
+                <br>
+                <div class="form-field">
+
+                    <input class="form-control validate" id="mobile" type="number" placeholder="mobile number"
+                           autocomplete="off" value="{{ shipping.mobile }}" required>
+
+                </div>
+
+            </div>
+
+
+            <br>
+
+
+        </form>
+
+        <!-- PayPal button container -->
+        <div id="paypal-button-container"></div>
+
+
+        <!-- PayPal client ID integration -->
+
+        <script src="https://www.paypal.com/sdk/js?client-id=id&currency=USD&intent=capture&enable-funding=venmo"
+                data-sdk-integration-source="integrationbuilder"></script>
+
+    </div>
+
+
+    <br>
+
+
+    </body>
+
+
+    <!-- Ajax integration -->
+
+
+
+    <script>
+        let price = '{{ cart.get_total }}'
+
+
+        //----------------------------paypal-integration-------------------------------------------//
+
+        const paypalButtonsComponent = paypal.Buttons({
+            // optional styling for buttons
+            // https://developer.paypal.com/docs/checkout/standard/customize/buttons-style-guide/
+            style: {
+                color: "blue",
+                shape: "rect",
+                layout: "vertical",
+                height: 40,
+            },
+
+            // set up the transaction
+            createOrder: (data, actions) => {
+                // pass in any options from the v2 orders create call:
+                // https://developer.paypal.com/api/orders/v2/#orders-create-request-body
+                const createOrderPayload = {
+                    purchase_units: [
+                        {
+                            amount: {
+                                value: price
+                            }
+                        }
+                    ]
+                };
+
+                return actions.order.create(createOrderPayload);
+            },
+
+            // finalize the transaction
+            onApprove: (data, actions) => {
+                const captureOrderHandler = (details) => {
+                    const payerName = details.payer.name.given_name;
+                    console.log('Transaction completed');
+                    $.ajax({
+                        type: 'POST',
+                        url: "{% url 'complete_order' %}",
+                        data: {
+                            name: $('#name').val(),
+                            address1: $('#address1').val(),
+                            landmark: $('#address2').val(),
+                            city: $('#city').val(),
+                            state: $('#state').val(),
+                            zipcode: $('#zipcode').val(),
+                            mobile: $('#mobile').val(),
+                            email: $('#email').val(),
+
+                            csrfmiddlewaretoken: '{{ csrf_token }}',
+                            action: 'post',
+
+                        },
+                        success: function (json) {
+                            window.location.replace("{% url 'ps' %}")
+
+                        },
+                        error: function (xhr, errmsg, err) {
+
+                        },
+
+
+                    });
+
+
+                };
+
+                return actions.order.capture().then(captureOrderHandler);
+            },
+
+            // handle unrecoverable errors
+            onError: (err) => {
+                console.error('An error prevented the buyer from checking out with PayPal');
+
+
+            }
+        });
+
+        paypalButtonsComponent
+            .render("#paypal-button-container")
+            .catch((err) => {
+                console.error('PayPal Buttons failed to render');
+            });
+    </script>
+
+
+
+
+
+{% endblock %}
