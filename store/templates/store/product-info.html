@@ -1,0 +1,214 @@
+{% extends "./base.html" %}
+
+{% load static %}
+{% block title %}
+    {{ product.title|title }}
+{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'store/p-info.css' %}">
+{% endblock %}
+{% block content %}
+    {% for message in messages %}
+        <div style='position:absolute; width:100%;' class="alert alert-success" role="alert">
+            <p class="text-center">{{ message }}</p>
+
+        </div>
+    {% endfor %}
+    <div class="container">
+
+        <main class="pt-5">
+
+            <div class="row g-3">
+
+                <div class="col-md-5 col-lg-5 order-md-first bg-light">
+
+                    <img class="img-fluid mx-auto d-block" alt="Responsive image" src="{{ product.image.url }}">
+                    <!-- Product image -->
+
+                </div>
+
+                <div class="col-md-7 col-lg-7 ps-md-3 ps-lg-5">
+
+                    <h1 class="mb-0 h4"> {{ product.title|title }} </h1>
+
+                    <strong>{{ product.brand|capfirst }}</strong>
+
+
+                    <hr>
+
+                    <br>
+
+
+                    <p> {{ product.description|capfirst }} </p>
+
+                    <div class="border">
+
+                        <div class="col border-bottom">
+
+                            <div class="row p-3">
+
+                                <div class="col-6"> Price</div>
+
+                                <div class="col-6 text-end"><span class="h4 fw-bold">${{ product.price }} </span></div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col">
+
+                            <div class="row p-3">
+
+                                <div class="col-6">
+
+
+                                    <label for="select">Qty</label>
+
+                                    &nbsp;
+
+                                    <select id="select">
+
+                                        <option value="1">1</option>
+
+                                        <option value="2">2</option>
+
+                                        <option value="3">3</option>
+
+                                        <option value="4">4</option>
+
+                                    </select>
+
+                                </div>
+
+                                <div class="col-6 text-end">
+
+                                    {% if request.user.is_authenticated %}
+
+                                        <button style="font-size: medium;" value="{{ product.id }}"
+                                                class='btn btn-sm btn-outline-success'
+                                                id="wishlist-link">
+                                            Add to Wishlist
+
+
+                                        </button>
+
+
+                                    {% endif %}
+                                    <button style="font-size: medium;" type="button" id="add-button"
+                                            value="{{ product.id }}"
+                                            class="btn btn-success btn-sm">
+
+                                        Add to cart
+
+                                    </button>
+
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                    <div class="reviews">
+                        <h4>Product Reviews</h4>
+                        <hr>
+                        {% for review in reviews %}
+                            <h5><strong>{{ review.user.first_name|title }}</strong></h5>
+                            <p>{{ review.review }}</p>
+                            {% if review.user == user %}
+                                <a href="{% url 'delrev' review.id %}" class="btn btn-danger btn-sm">Delete</a>
+                            {% endif %}
+                            <hr>
+                        {% endfor %}
+
+                    </div>
+                    {% if user.is_authenticated %}
+
+                        <div class="write-review">
+                            <h4>Write a Review</h4>
+                            <br>
+                            <form class="revform" method="post" action="{% url 'postrev' %}">
+                                {% csrf_token %}
+                                <input autocomplete="false" id="rev" name="rev" placeholder="Review..." type="text"
+                                       maxlength="450"
+                                       required>
+                                <input id="product_id" name='product_id' type="hidden" value="{{ product.id }}">
+                                <button class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                        </div>
+
+                    {% endif %}
+            </div>
+
+        </main>
+
+        <br>
+
+    </div>
+    <script>
+        {#----------------------------cart-add------------------------------------------------------------------#}
+        $(document).on('click', '#add-button', function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'cart-add' %}",
+                data: {
+                    product_id: $('#add-button').val(),
+                    product_qty: $('#select option:selected').text(),
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    action: 'post',
+
+                },
+                success: function (json) {
+                    $('#add-button').text('Added to cart')
+                    document.getElementById('cart-qty').textContent = json.product_qty;
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3000);
+                },
+                error: function (xhr, errmsg, err) {
+
+                },
+
+
+            });
+
+        })
+
+        {#--------------------wishlist-add------------------------------------------------------------#}
+        $(document).on('click', '#wishlist-link', function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'wishlist' %}",
+                data: {
+                    product_id: $('#wishlist-link').val(),
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    action: 'post',
+
+                },
+                success: function (json) {
+                    $('#wishlist-link').text('Added to wishlist ')
+                },
+                error: function (xhr, errmsg, err) {
+                    $('#wishlist-link').text('Already in your Wishlist')
+                },
+
+
+            });
+
+        })
+        {# -----------------------hide-alert--------------------------- #}
+        setTimeout(function () {
+            $('.alert').fadeOut('slow', 'linear')
+        }, 2000);
+
+    </script>
+
+{% endblock %}

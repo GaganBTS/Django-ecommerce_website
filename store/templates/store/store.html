@@ -1,0 +1,105 @@
+{% extends "./base.html" %}
+{% load static %}
+{% block title %}GShop{% endblock %}
+
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'store/store.css' %}">
+{% endblock %}
+{% block content %}
+
+    {% for message in messages %}
+        <div style='position:absolute; width:100%;' class="alert alert-info" role="alert">
+            <p class="text-center">{{ message }}</p>
+
+        </div>
+    {% endfor %}
+    <!-- Introduction section -->
+
+    <section class="py-4 text-center container">
+
+        <div class="row py-lg-5">
+
+            <div class="col-lg-6 col-md-8 mx-auto">
+
+
+                <h3> GShop...Simplicity at it's finest. </h3>
+
+
+                <br>
+
+
+                <p class="lead text-muted">
+
+                    Browse our extensive collection.
+
+                </p>
+
+
+                <br>
+                {% if user.is_authenticated %}
+                    <a href="" class="btn btn-outline-primary my-2"> Logout </a>
+                {% else %}
+                    <a href="{% url 'register' %}" class="btn btn-outline-primary my-2"> Create an account </a>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+    </section>
+    <!-- All products section -->
+
+    <div class="album py-5 bg-light">
+
+        <div class="container">
+
+            <div class="pb-3 text-center h4"> All products</div>
+
+
+            <hr>
+
+            <br>
+
+
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-3">
+
+                {% for product in products %}
+
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <img class="img-fluid" alt="Responsive image" src="{{ product.image.url }}"
+                                 style='height:18rem;'>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    <a class="text-info text-decoration-none"
+                                       href="{% url 'product-info' product.slug %}">{{ product.title|capfirst }}</a>
+                                </p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5> ${{ product.price }}</h5>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        setTimeout(function () {
+            $('.alert').fadeOut('slow', 'linear')
+        }, 2000);
+    </script>
+{% endblock %}
+
+
+
+
+
+

@@ -1,0 +1,55 @@
+.reviews {
+    margin-top: 3%;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    padding: 2%;
+}
+
+.write-review {
+    margin-top: 3%;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    padding: 2%;
+}
+
+.write-review #rev {
+    width: 100%;
+    outline: none;
+    border: none;
+    border-bottom: 2px groove #2c3e50;
+    padding: 1.5%;
+    margin-bottom: 2%;
+}
+
+.write-review #rev:focus {
+    border-bottom: 3px groove #2c3e50 !important;
+}
+
+.write-review .revform .btn {
+    width: 30% !important;
+    text-transform: uppercase;
+}
+
+@media only screen  and (min-width: 150px) and (max-width: 768px) {
+
+    .reviews {
+        margin-top: 6%;
+        padding: 4%;
+    }
+
+    .write-review {
+        margin-top: 6%;
+        padding: 3%;
+        margin-bottom: 4%;
+    }
+
+    .write-review .revform .btn {
+        margin-top: 2.5%;
+
+        width: 60% !important;
+    }
+
+    .col-6 #add-button {
+        margin-top: 5%;
+        padding: 4% 8%;
+
+    }
+}

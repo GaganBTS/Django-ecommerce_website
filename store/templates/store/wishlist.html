@@ -1,0 +1,56 @@
+{% extends "./base.html" %}
+{% load static %}
+{% block title %}
+    My Wishlist
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'store/wishlist.css' %}">
+{% endblock %}
+
+
+
+{% block content %}
+    {% for message in messages %}
+        <div style='position:absolute; width:100%;' class="alert alert-success" role="alert">
+            <p class="text-center">{{ message }}</p>
+
+        </div>
+    {% endfor %}
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <h3 class="heading-text text-center">My Wishlist</h3>
+            <div class="row">
+                {% for items in wishlist %}
+                    <div class="col-md-4">
+                        <div class="card mb-4 box-shadow">
+                            <img class="card-img-top"
+                                 src="{{ items.product.image.url }}"
+                                 alt="Card image cap">
+                            <div class="card-body">
+                                <p class="card-text">{{ items.product.title|title }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <button onclick=window.open("{% url 'product-info' items.product.slug %}",'_self')
+                                                type="button" class="btn btn-sm btn-primary">View
+                                        </button>
+
+                                        <button onclick=window.open("{% url 'del' items.product.slug %}",'_self')
+                                                type="button" class="btn btn-sm btn-danger">Remove
+                                        </button>
+                                    </div>
+                                    <small class="text-muted">{{ items.product.brand|title }}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <script>
+        setTimeout(function () {
+            $('.alert').fadeOut('slow', 'linear')
+        }, 2000);
+    </script>
+{% endblock %}
